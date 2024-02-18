@@ -1,0 +1,27 @@
+<%- include('partials/header.ejs') %>
+
+<section id="title-area">
+    <h1>Media<span class="highlight">Notes</span></h1>
+    <p>This is a collection of various forms of media I've consumed including books and records. I've included my notes, thoughts, and any relevant information. Consider this a repository.</p>
+</section>
+<section id="entries">
+    <h2>Entries:</h2>
+    <% if(media) {%>
+        <ul id="media-list">
+            <% media.forEach(entry => { %>
+                <li>
+                    <h3><%= entry.title %></h3>
+                    <h4>by <%= entry.artist %></h4>
+                    <form action="/" method="post">
+                        <button type="submit" formaction="/view" name="viewEntry" value="<%= entry.id %>">V</button>
+                        <button type="submit" formaction="/edit" name="editEntry" value="<%= entry.id %>">E</button>
+                        <button type="submit" formaction="/delete" name="deleteEntry" value="<%= entry.id %>">D</button>
+                    </form>
+                    <h5>added: <%= entry.date_added %></h5>
+                </li>
+            <% }) %>
+        </ul>
+    <% } %>
+</section>
+
+<%- include('partials/footer.ejs') %>
