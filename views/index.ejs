@@ -76,7 +76,7 @@
       <input type="submit" name="submit" id="submit" value="Submit" />
     </form>
     <% } %>
-    <% if (editing.edit) {%>
+    <% if (editing.edit && editing.editId > 0) {%>
     <% let editEntry = media.find(entry => entry.id == editing.editId) %>
     <h3>Editing <%= editEntry.title %></h3>
     <form action="/new" method="post">
@@ -96,6 +96,8 @@
         value="<%= editEntry.artist %>"
         required
       />
+      <input type="hidden" name="editEntry" value="<%= editEntry.id %>">
+      <input type="hidden" name="editType" value="<%= editEntry.type %>">
       <input type="submit" name="submit" id="submit" />
     </form>
     <% } %>
