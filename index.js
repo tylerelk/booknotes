@@ -18,7 +18,10 @@ const db = new pg.Client({
 
 db.connect();
 
-let editing = false;
+let editing = {
+    edit: false,
+    editId: 0
+};
 
 //Databse access functions
 const databaseMethods = {
@@ -39,7 +42,7 @@ async function getMedia() {
 app.get('/', async (req, res) => {
     res.render('index.ejs', {
         media: await getMedia(),
-        editing: editing
+        editing: editing,
     });
 });
 
@@ -60,12 +63,15 @@ app.post('/view', (req, res) => {
 })
 
 app.post('/edit', (req, res) => {
-    console.log(req.body);
+    editing = {
+        edit: true,
+        editId: req.body.editEntry
+    }
     res.redirect('/');
 });
 
-app.post('/delete', (req, res) => {
-    console.log(req.body);
+app.post('/delete', async (req, res) => {
+    await db.query(databaseMethods.delete, [req.body.deleteEntry]);
     res.redirect('/');
 });
 

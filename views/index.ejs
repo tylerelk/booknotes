@@ -15,7 +15,7 @@
     <% media.forEach(entry => { %>
     <li>
       <h3><%= entry.title %></h3>
-      <h4>by <%= entry.artist %></h4>
+      <h4><%= (entry.type == 'music') ? 'Album' : 'Book' %> by <%= entry.artist %></h4>
       <form action="/" method="post">
         <button
           type="submit"
@@ -42,7 +42,7 @@
           D
         </button>
       </form>
-      <h5>added: <%= entry.date_added %></h5>
+      <h5>added: <%= entry.created_at %></h5>
     </li>
     <% }) %>
   </ul>
@@ -50,7 +50,7 @@
 </section>
 <section id="entry">
   <div id="entry-edit" data-visible="add">
-    <% if (!editing) {%>
+    <% if (!editing.edit) {%>
     <h3>New Entry</h3>
     <form action="/new" method="post">
       <div class="type-selector">
@@ -75,8 +75,9 @@
       <input type="text" name="artist" id="artist-entry" required/>
       <input type="submit" name="submit" id="submit" value="Submit" />
     </form>
-    <% } %> <% if (editing) {%> <% let editEntry = media.find(entry => entry.id
-    === editId) %>
+    <% } %>
+    <% if (editing.edit) {%>
+    <% let editEntry = media.find(entry => entry.id == editing.editId) %>
     <h3>Editing <%= editEntry.title %></h3>
     <form action="/new" method="post">
       <label for="title">Title:</label>
