@@ -1,27 +1,106 @@
 <%- include('partials/header.ejs') %>
 
 <section id="title-area">
-    <h1>Media<span class="highlight">Notes</span></h1>
-    <p>This is a collection of various forms of media I've consumed including books and records. I've included my notes, thoughts, and any relevant information. Consider this a repository.</p>
+  <h1>Media<span class="highlight">Notes</span></h1>
+  <p>
+    This is a collection of various forms of media I've consumed including books
+    and records. I've included my notes, thoughts, and any relevant information.
+    Consider this a repository.
+  </p>
 </section>
 <section id="entries">
-    <h2>Entries:</h2>
-    <% if(media) {%>
-        <ul id="media-list">
-            <% media.forEach(entry => { %>
-                <li>
-                    <h3><%= entry.title %></h3>
-                    <h4>by <%= entry.artist %></h4>
-                    <form action="/" method="post">
-                        <button type="submit" formaction="/view" name="viewEntry" value="<%= entry.id %>">V</button>
-                        <button type="submit" formaction="/edit" name="editEntry" value="<%= entry.id %>">E</button>
-                        <button type="submit" formaction="/delete" name="deleteEntry" value="<%= entry.id %>">D</button>
-                    </form>
-                    <h5>added: <%= entry.date_added %></h5>
-                </li>
-            <% }) %>
-        </ul>
+  <h2>Entries:</h2>
+  <% if(media) {%>
+  <ul id="media-list">
+    <% media.forEach(entry => { %>
+    <li>
+      <h3><%= entry.title %></h3>
+      <h4>by <%= entry.artist %></h4>
+      <form action="/" method="post">
+        <button
+          type="submit"
+          formaction="/view"
+          name="viewEntry"
+          value="<%= entry.id %>"
+        >
+          V
+        </button>
+        <button
+          type="submit"
+          formaction="/edit"
+          name="editEntry"
+          value="<%= entry.id %>"
+        >
+          E
+        </button>
+        <button
+          type="submit"
+          formaction="/delete"
+          name="deleteEntry"
+          value="<%= entry.id %>"
+        >
+          D
+        </button>
+      </form>
+      <h5>added: <%= entry.date_added %></h5>
+    </li>
+    <% }) %>
+  </ul>
+  <% } %>
+</section>
+<section id="entry">
+  <div id="entry-edit" data-visible="add">
+    <% if (!editing) {%>
+    <h3>New Entry</h3>
+    <form action="/new" method="post">
+      <div class="type-selector">
+        <label for="type-selector">Book/Music</label>
+        <input
+          type="radio"
+          name="type-selector"
+          id="book-radio"
+          value="book"
+          checked
+        />
+        <input
+          type="radio"
+          name="type-selector"
+          id="music-radio"
+          value="music"
+        />
+      </div>
+      <label for="title">Title:</label>
+      <input type="text" name="title" id="title-entry" required/>
+      <label for="artist">Author:</label>
+      <input type="text" name="artist" id="artist-entry" required/>
+      <input type="submit" name="submit" id="submit" value="Submit" />
+    </form>
+    <% } %> <% if (editing) {%> <% let editEntry = media.find(entry => entry.id
+    === editId) %>
+    <h3>Editing <%= editEntry.title %></h3>
+    <form action="/new" method="post">
+      <label for="title">Title:</label>
+      <input
+        type="text"
+        name="title"
+        id="title-entry"
+        value="<%= editEntry.title %>"
+        required
+      />
+      <label for="artist">Author:</label>
+      <input
+        type="text"
+        name="artist"
+        id="artist-entry"
+        value="<%= editEntry.artist %>"
+        required
+      />
+      <input type="submit" name="submit" id="submit" />
+    </form>
     <% } %>
+  </div>
+  <div id="delete-confirm" data-visible="delete"></div>
+  <div id="added" data-visible="confirm"></div>
 </section>
 
 <%- include('partials/footer.ejs') %>

@@ -13,22 +13,24 @@ const db = new pg.Client({
     host: 'localhost',
     database: 'media',
     password: 'Magnolia21!',
-    port: 5433,
+    port: 5432,
 });
 
 db.connect();
+
+let editing = false;
 
 //Databse access functions
 const databaseMethods = {
     view: 'SELECT $1 FROM media',
     edit: 'UPDATE media SET (title, artist, notes) WHERE id = $1',
     delete: 'DELETE FROM media WHERE id = $1',
-    add: 'INSERT INTO media (title, type, artist) VALUES ($1, $2, $3)'
+    add: 'INSERT INTO media (title, artist, type) VALUES ($1, $2, $3)'
 };
 
 async function getMedia() {
     let media = [];
-    const result = await db.query('SELECT * FROM media ORDER BY date_added ASC');
+    const result = await db.query('SELECT * FROM media ORDER BY created_at ASC');
     result.rows.forEach(row => media.push(row));
     return media;
 };
@@ -36,13 +38,20 @@ async function getMedia() {
 //HTTP responses
 app.get('/', async (req, res) => {
     res.render('index.ejs', {
-        media: await getMedia()
+        media: await getMedia(),
+        editing: editing
     });
 });
 
-app.post('/new', (req, res) => {
-    console.log(req.body);
-    res.redirect('/');
+app.post('/new', async (req, res) => {
+    let newEntry = [req.body.title, req.body.artist, req.body['type-selector']];
+    try {
+        await db.query(databaseMethods.add, newEntry);
+        res.redirect('/');
+    } catch (err) {
+        console.log(err);
+        res.redirect('/');
+    };
 });
 
 app.post('/view', (req, res) => {
