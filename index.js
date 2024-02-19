@@ -25,7 +25,8 @@ let editing = {
 
 //Databse access functions
 const databaseMethods = {
-  view: "SELECT $1 FROM media",
+  view: "SELECT * FROM media WHERE id = $1",
+  notes: "SELECT note FROM media JOIN notes ON media.id = media_id WHERE id = $1",
   edit: "UPDATE media SET title = $1, artist = $2 WHERE id = $3",
   delete: "DELETE FROM media WHERE id = $1",
   add: "INSERT INTO media (title, artist, type) VALUES ($1, $2, $3)",
@@ -47,15 +48,14 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/new", async (req, res) => {
-    console.log(req.body)
   if (req.body.editType) {
     let edit = [req.body.title, req.body.artist, req.body.editEntry];
     try {
       await db.query(databaseMethods.edit, edit);
       editing = {
         edit: false,
-        editId: 0
-      }
+        editId: 0,
+      };
       res.redirect("/");
     } catch (err) {
       console.log(err);
@@ -73,9 +73,10 @@ app.post("/new", async (req, res) => {
   }
 });
 
-app.post("/view", (req, res) => {
-  console.log(req.body);
-  res.redirect("/");
+app.post("/view", async (req, res) => {
+    let selected = await db.query(databaseMethods.view, [req.body.viewEntry]);
+    let notes = await db.query(databaseMethods.notes, [req.body.viewEntry])
+  res.render("media.ejs", {media: selected.rows[0], notes: notes.rows});
 });
 
 app.post("/edit", (req, res) => {

@@ -1,0 +1,11 @@
+<section id="title-area">
+    <h1><%= media.title %></h1>
+    <h2><%= media.artist %></h2>
+    <% if(notes) {%>
+        <ul id="notes-list">
+            <% notes.forEach(note => { %>
+                <li><%= note.note %></li>
+            <% }) %>
+        </ul>
+    <% } %>
+  </section>
