@@ -25,11 +25,17 @@ let editing = {
 
 //Databse access functions
 const databaseMethods = {
+  //for entries
   view: "SELECT * FROM media WHERE id = $1",
-  notes: "SELECT note FROM media JOIN notes ON media.id = media_id WHERE id = $1",
   edit: "UPDATE media SET title = $1, artist = $2 WHERE id = $3",
   delete: "DELETE FROM media WHERE id = $1",
   add: "INSERT INTO media (title, artist, type) VALUES ($1, $2, $3)",
+  //for notes
+  notes:
+    "SELECT * FROM media JOIN notes ON media.id = media_id WHERE media.id = $1 ORDER BY created_at ASC",
+  newNote: "INSERT INTO notes (media_id, note) VALUES ($1, $2)",
+  editNote: "UPDATE notes SET note = $1 WHERE id = $2",
+  deleteNote: "DELETE FROM notes WHERE id = $1",
 };
 
 async function getMedia() {
@@ -74,9 +80,9 @@ app.post("/new", async (req, res) => {
 });
 
 app.post("/view", async (req, res) => {
-    let selected = await db.query(databaseMethods.view, [req.body.viewEntry]);
-    let notes = await db.query(databaseMethods.notes, [req.body.viewEntry])
-  res.render("media.ejs", {media: selected.rows[0], notes: notes.rows});
+  let selected = await db.query(databaseMethods.view, [req.body.viewEntry]);
+  let notes = await db.query(databaseMethods.notes, [req.body.viewEntry]);
+  res.render("media.ejs", { media: selected.rows[0], notes: notes.rows });
 });
 
 app.post("/edit", (req, res) => {
@@ -84,6 +90,27 @@ app.post("/edit", (req, res) => {
     edit: true,
     editId: +req.body.editEntry,
   };
+  res.redirect("/");
+});
+
+app.post("/notes", async (req, res) => {
+  switch (req.body.noteAlterType) {
+    case "add":
+      await db.query(databaseMethods.newNote, [
+        req.body.noteMediaId,
+        req.body["new-note"],
+      ]);
+      break;
+    case "edit":
+      await db.query(databaseMethods.editNote, [
+        req.body["edit-note"],
+        req.body.noteId,
+      ]);
+      break;
+    case "delete":
+      await db.query(databaseMethods.deleteNote, [req.body.noteId]);
+      break;
+  }
   res.redirect("/");
 });
 

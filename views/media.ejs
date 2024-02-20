@@ -2,10 +2,38 @@
     <h1><%= media.title %></h1>
     <h2><%= media.artist %></h2>
     <% if(notes) {%>
+        <button>Add New Note</button>
+        <form action="/notes" class="notes-edit" method="post">
+            <div class="new-note-div">
+                <label for="new-note">Enter note content:</label>
+                <input type="text" name="new-note" id="new-note-input">
+                <input type="submit" value="Add">
+                <input type="hidden" name="noteMediaId" value="<%= media.id %>">
+                <input type="hidden" name="noteAlterType" value="add">
+            </div>
+        </form>
         <ul id="notes-list">
             <% notes.forEach(note => { %>
                 <li><%= note.note %></li>
+                <button id="edit-note">Edit</button>
+                <button id="delete-note">Delete</button>
+                <form action="/notes" method="post">
+                    <label for="edit-note">Enter new content:</label>
+                    <input type="text" name="edit-note" id="edit-note-input">
+                    <input type="submit" value="Edit">
+                    <input type="hidden" name="noteId" value="<%= note.id %>">
+                    <input type="hidden" name="noteAlterType" value="edit">
+                </form>
+                <form action="/notes" method="post">
+                    <input type="submit" value="Delete">
+                    <input type="hidden" name="noteId" value="<%= note.id %>">
+                    <input type="hidden" name="noteAlterType" value="delete">
+                </form>
             <% }) %>
         </ul>
     <% } %>
   </section>
+
+<!--   DO NEXT:
+  - Styling
+  - Local JS -->
