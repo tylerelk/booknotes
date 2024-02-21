@@ -1,7 +1,7 @@
 <%- include('partials/header.ejs') %>
 
 <section id="title-area">
-  <h1>Media<span class="highlight">Notes</span></h1>
+  <h1 class="title">Media<span class="highlight">Notes</span></h1>
   <p>
     This is a collection of various forms of media I've consumed including books
     and records. I've included my notes, thoughts, and any relevant information.
@@ -14,8 +14,9 @@
   <ul id="media-list">
     <% media.forEach(entry => { %>
     <li>
-      <h3><%= entry.title %></h3>
-      <h4><%= (entry.type == 'music') ? 'Album' : 'Book' %> by <%= entry.artist %></h4>
+      <h3 class="entry-title"><%= entry.title %></h3>
+      <h5>Album by <span class="highlight"><%= entry.artist %></span></h5>
+      <img src="<%= entry.cover_url %>" alt="Album cover">
       <form action="/" method="post">
         <button
           type="submit"
@@ -23,7 +24,7 @@
           name="viewEntry"
           value="<%= entry.id %>"
         >
-          V
+          View
         </button>
         <button
           type="submit"
@@ -31,7 +32,7 @@
           name="editEntry"
           value="<%= entry.id %>"
         >
-          E
+          Edit
         </button>
         <button
           type="submit"
@@ -39,7 +40,7 @@
           name="deleteEntry"
           value="<%= entry.id %>"
         >
-          D
+          Delete
         </button>
       </form>
       <h5>added: <%= entry.created_at %></h5>
@@ -53,26 +54,12 @@
     <% if (!editing.edit) {%>
     <h3>New Entry</h3>
     <form action="/new" method="post">
-      <div class="type-selector">
-        <label for="type-selector">Book/Music</label>
-        <input
-          type="radio"
-          name="type-selector"
-          id="book-radio"
-          value="book"
-          checked
-        />
-        <input
-          type="radio"
-          name="type-selector"
-          id="music-radio"
-          value="music"
-        />
-      </div>
       <label for="title">Title:</label>
       <input type="text" name="title" id="title-entry" required/>
       <label for="artist">Author:</label>
       <input type="text" name="artist" id="artist-entry" required/>
+      <label for="genre">Genre:</label>
+      <input type="text" name="genre" id="genre-entry" required/>
       <input type="submit" name="submit" id="submit" value="Submit" />
     </form>
     <% } %>
@@ -96,8 +83,15 @@
         value="<%= editEntry.artist %>"
         required
       />
+      <label for="genre">Genre:</label>
+      <input
+        type="text"
+        name="genre"
+        id="genre-entry"
+        value="<%= editEntry.genre %>"
+        required
+      />
       <input type="hidden" name="editEntry" value="<%= editEntry.id %>">
-      <input type="hidden" name="editType" value="<%= editEntry.type %>">
       <input type="submit" name="submit" id="submit" />
     </form>
     <% } %>

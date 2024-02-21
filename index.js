@@ -1,12 +1,13 @@
 import pg from "pg";
 import express from "express";
 import bodyParser from "body-parser";
+import axios from "axios";
 
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.static("public/"));
 
 const db = new pg.Client({
   user: "postgres",
@@ -29,7 +30,7 @@ const databaseMethods = {
   view: "SELECT * FROM media WHERE id = $1",
   edit: "UPDATE media SET title = $1, artist = $2 WHERE id = $3",
   delete: "DELETE FROM media WHERE id = $1",
-  add: "INSERT INTO media (title, artist, type) VALUES ($1, $2, $3)",
+  add: "INSERT INTO media (title, artist, genre) VALUES ($1, $2, $3)",
   //for notes
   notes:
     "SELECT * FROM media JOIN notes ON media.id = media_id WHERE media.id = $1 ORDER BY created_at ASC",
@@ -42,13 +43,37 @@ async function getMedia() {
   let media = [];
   const result = await db.query("SELECT * FROM media ORDER BY created_at ASC");
   result.rows.forEach((row) => media.push(row));
+  media.forEach(async (entry) => {
+    let options = {
+      method: "GET",
+      url: "https://spotify23.p.rapidapi.com/search/",
+      params: {
+        q: `${entry.title}`,
+        type: "multi",
+        offset: "0",
+        limit: "10",
+        numberOfTopResults: "5",
+      },
+      headers: {
+        "X-RapidAPI-Key": "a4f834c5e8mshfbbc3a59eb5451fp1864e1jsn588f990650d6",
+        "X-RapidAPI-Host": "spotify23.p.rapidapi.com",
+      },
+    };
+    let covers = await axios.request(options);
+    await db.query("UPDATE media SET cover_url = $1 WHERE id = $2", [
+      covers.data.albums.items[0].data.coverArt.sources[2].url,
+      entry.id,
+    ]);
+    console.log(entry);
+  });
   return media;
 }
 
 //HTTP responses
 app.get("/", async (req, res) => {
+  const media = await getMedia();
   res.render("index.ejs", {
-    media: await getMedia(),
+    media: media,
     editing: editing,
   });
 });
@@ -68,7 +93,7 @@ app.post("/new", async (req, res) => {
       res.redirect("/");
     }
   } else {
-    let newEntry = [req.body.title, req.body.artist, req.body["type-selector"]];
+    let newEntry = [req.body.title, req.body.artist, req.body.genre];
     try {
       await db.query(databaseMethods.add, newEntry);
       res.redirect("/");

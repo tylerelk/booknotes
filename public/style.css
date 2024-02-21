@@ -1,0 +1,87 @@
+:root {
+  /* colors */
+  --red: #bf1a2f;
+  --white: #f4f4f6;
+  --black: #0f1108;
+}
+
+html *{
+    list-style-type: none;
+    text-decoration: none;
+}
+
+ul, li {
+    padding: 0;
+}
+
+h1,
+h2 {
+  font-family: "Libre Baskerville", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+h2 {
+    border-bottom: 1px solid var(--red);
+}
+
+h3,
+h4,
+h5,
+p,
+input,
+button {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--white);
+  color: var(--black);
+}
+
+section {
+  width: 80%;
+  margin: 0 auto;
+}
+
+#title-area {
+  border-radius: 20px;
+  border: 1px solid var(--black);
+  padding: 1rem 3rem;
+  margin: 1rem auto;
+  box-shadow: 1px 3px 10px 2px lightgrey;
+}
+
+.title {
+  font-size: 60px;
+  margin: 0;
+}
+
+#media-list > li{
+    border-radius: 20px;
+    border: 1px solid var(--black);
+    margin: 2rem auto;
+    padding: 1rem;
+    box-shadow: 1px 3px 10px 2px lightgrey;
+}
+
+.entry-title {
+    font-size: 30px;
+}
+
+#footer {
+  width: 100%;
+  margin: 0;
+  padding: 0 1rem;
+}
+
+.highlight {
+  color: var(--red);
+}
