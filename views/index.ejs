@@ -15,7 +15,7 @@
     <% media.forEach(entry => { %>
     <li>
       <h3 class="entry-title"><%= entry.title %></h3>
-      <h5>Album by <span class="highlight"><%= entry.artist %></span></h5>
+      <h5><%= entry.genre %> album by <span class="highlight"><%= entry.artist %></span></h5>
       <img src="<%= entry.cover_url %>" alt="Album cover">
       <form action="/" method="post">
         <button
