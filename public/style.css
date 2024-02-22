@@ -47,16 +47,17 @@ body {
 }
 
 section {
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
 }
 
 #title-area {
   border-radius: 20px;
   border: 1px solid var(--black);
-  padding: 1rem 3rem;
   margin: 1rem auto;
+  padding: 1rem 3rem;
   box-shadow: 1px 3px 10px 2px lightgrey;
+  box-sizing: border-box;
 }
 
 .title {
@@ -72,13 +73,68 @@ section {
     box-shadow: 1px 3px 10px 2px lightgrey;
 }
 
+.entry-card {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.entry-info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .entry-title {
-    font-size: 30px;
+  margin: 0;
+    font-size: 40px;
+    border-bottom: 1px solid var(--red);
+    width: max-content;
+}
+
+button {
+  border-radius: 100%;
+  padding: 0.5rem;
+  background-color: var(--red);
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  outline: none;
+}
+
+button:hover {
+  transform: rotateY(360deg);
+  transition: 1000ms;
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: min-content;
+  gap: 1rem;
+}
+
+.album-cover {
+  width: 25%;
+  height: 25%;
+  margin: 1rem 0;
+  border-radius: 10px;
+  box-shadow: 1px 3px 10px 2px lightgrey;
+  transform: scale(0.9);
+  transition: 300ms ease-out;
+}
+
+.album-cover:hover {
+  transform: scale(1.0);
 }
 
 #footer {
-  width: 100%;
-  margin: 0;
+  width: auto;
+  margin: auto;
   padding: 0 1rem;
 }
 

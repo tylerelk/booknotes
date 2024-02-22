@@ -3,9 +3,7 @@
 <section id="title-area">
   <h1 class="title">Media<span class="highlight">Notes</span></h1>
   <p>
-    This is a collection of various forms of media I've consumed including books
-    and records. I've included my notes, thoughts, and any relevant information.
-    Consider this a repository.
+    A collection of experiences with music.
   </p>
 </section>
 <section id="entries">
@@ -13,37 +11,45 @@
   <% if(media) {%>
   <ul id="media-list">
     <% media.forEach(entry => { %>
-    <li>
-      <h3 class="entry-title"><%= entry.title %></h3>
-      <h5><%= entry.genre %> album by <span class="highlight"><%= entry.artist %></span></h5>
-      <img src="<%= entry.cover_url %>" alt="Album cover">
-      <form action="/" method="post">
-        <button
-          type="submit"
-          formaction="/view"
-          name="viewEntry"
-          value="<%= entry.id %>"
-        >
-          View
-        </button>
-        <button
-          type="submit"
-          formaction="/edit"
-          name="editEntry"
-          value="<%= entry.id %>"
-        >
-          Edit
-        </button>
-        <button
-          type="submit"
-          formaction="/delete"
-          name="deleteEntry"
-          value="<%= entry.id %>"
-        >
-          Delete
-        </button>
-      </form>
-      <h5>added: <%= entry.created_at %></h5>
+    <h5>added: <%= entry.created_at %></h5>
+    <li class="entry-card">
+      <div class="entry-info-container">
+        <h3 class="entry-title"><%= entry.title %></h3>
+        <h5 style="text-align: center;"><%= entry.genre %> album by <span class="highlight"><%= entry.artist %></span></h5>
+        <form action="/" method="post" class="card-buttons">
+          <button
+            type="submit"
+            formaction="/view"
+            name="viewEntry"
+            value="<%= entry.id %>"
+          >
+          <span class="material-symbols-outlined">
+            visibility
+            </span>
+          </button>
+          <button
+            type="submit"
+            formaction="/edit"
+            name="editEntry"
+            value="<%= entry.id %>"
+          >
+          <span class="material-symbols-outlined">
+            edit
+            </span>
+          </button>
+          <button
+            type="submit"
+            formaction="/delete"
+            name="deleteEntry"
+            value="<%= entry.id %>"
+          >
+          <span class="material-symbols-outlined">
+            delete_forever
+            </span>
+          </button>
+        </form>
+      </div>
+      <img src="<%= entry.cover_url %>" alt="Album cover" class="album-cover">
     </li>
     <% }) %>
   </ul>
@@ -59,7 +65,18 @@
       <label for="artist">Author:</label>
       <input type="text" name="artist" id="artist-entry" required/>
       <label for="genre">Genre:</label>
-      <input type="text" name="genre" id="genre-entry" required/>
+      <select name="genre" id="genre-entry">
+        <option value="Rock">Rock</option>
+        <option value="Metal">Metal</option>
+        <option value="Alternative">Alternative</option>
+        <option value="Punk">Punk</option>
+        <option value="Folk">Folk</option>
+        <option value="Jazz">Jazz</option>
+        <option value="Hip-hop">Hip-hop</option>
+        <option value="Rap">Rap</option>
+        <option value="Electronic">Electronic</option>
+        <option value="Other">Other</option>
+      </select>
       <input type="submit" name="submit" id="submit" value="Submit" />
     </form>
     <% } %>

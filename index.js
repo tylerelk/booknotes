@@ -74,7 +74,7 @@ app.post("/new", async (req, res) => {
       method: "GET",
       url: "https://spotify23.p.rapidapi.com/search/",
       params: {
-        q: `${req.body.title}`,
+        q: `${req.body.title} ${req.body.artist}`,
         type: "multi",
         offset: "0",
         limit: "10",
@@ -85,7 +85,7 @@ app.post("/new", async (req, res) => {
         "X-RapidAPI-Host": "spotify23.p.rapidapi.com",
       },
     });
-    let newEntry = [req.body.title, req.body.artist, req.body.genre, covers.data.albums.items[0].data.coverArt.sources[2].url];
+    let newEntry = [covers.data.albums.items[0].data.name, covers.data.albums.items[0].data.artists.items[0].profile.name, req.body.genre, covers.data.albums.items[0].data.coverArt.sources[2].url];
     try {
       await db.query(databaseMethods.add, newEntry);
       res.redirect("/");
@@ -111,7 +111,6 @@ app.post("/edit", (req, res) => {
 });
 
 app.post("/notes", async (req, res) => {
-  console.log(req.body)
   switch (req.body.noteAlterType) {
     case "add":
       await db.query(databaseMethods.newNote, [
