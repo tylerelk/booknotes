@@ -30,7 +30,8 @@ h4,
 h5,
 p,
 input,
-button {
+button,
+label {
   font-family: "Ubuntu", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -47,17 +48,38 @@ body {
 }
 
 section {
-  width: 70%;
+  width: 60%;
   margin: 0 auto;
 }
 
 #title-area {
   border-radius: 20px;
-  border: 1px solid var(--black);
   margin: 1rem auto;
-  padding: 1rem 3rem;
+  padding: 1rem;
   box-shadow: 1px 3px 10px 2px lightgrey;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-container {
+  flex: 1;
+}
+
+.large-button {
+  width: max-content;
+  border-radius: 20px;
+  background-color: var(--red);
+  color: var(--white);
+  border: none;
+  outline: none;
+}
+
+.show-hide {
+  transition: 1s;
+  position: absolute;
+  z-index: 1;
 }
 
 .title {
@@ -65,9 +87,25 @@ section {
   margin: 0;
 }
 
+.title-container * {
+  width: max-content
+}
+
+.title-container-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+#entry-edit {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+
 #media-list > li{
     border-radius: 20px;
-    border: 1px solid var(--black);
     margin: 2rem auto;
     padding: 1rem;
     box-shadow: 1px 3px 10px 2px lightgrey;
@@ -93,6 +131,22 @@ section {
     width: max-content;
 }
 
+#entry {
+  position: relative;
+  transition: 1s;
+  opacity: 0%;
+  margin: 0;
+  width: 100%;
+}
+
+#entry table {
+  width: 100%;
+}
+
+#entry input[type="text"], #entry select {
+  width: 100%;
+}
+
 button {
   border-radius: 100%;
   padding: 0.5rem;
@@ -103,9 +157,16 @@ button {
   align-items: center;
   border: none;
   outline: none;
+  transition: 1s;
 }
 
-button:hover {
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.material-symbols-outlined:hover {
   transform: rotateY(360deg);
   transition: 1000ms;
 }
@@ -130,6 +191,7 @@ button:hover {
 
 .album-cover:hover {
   transform: scale(1.0);
+  border: 2px solid var(--red)
 }
 
 #footer {
@@ -141,3 +203,16 @@ button:hover {
 .highlight {
   color: var(--red);
 }
+
+/* view-mode settings */
+.notes-edit {
+  opacity: 0%;
+  transition: 1s;
+}
+
+#edit-note-form {
+  opacity: 0%;
+  transition: 1s;
+}
+
+/* Temp styles */

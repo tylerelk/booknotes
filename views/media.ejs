@@ -1,37 +1,54 @@
 <%- include('partials/header.ejs') %>
 
-<section id="title-area">
+<section id="title-area view-mode">
     <h1><%= media.title %></h1>
-    <h2><%= media.artist %></h2>
+    <h2>by <%= media.artist %></h2>
 </section>
     <% if(notes) {%>
-        <button>Add New Note</button>
-        <form action="/notes" class="notes-edit" method="post">
-            <div class="new-note-div">
-                <label for="new-note">Enter note content:</label>
-                <input type="text" name="new-note" id="new-note-input">
-                <input type="submit" value="Add">
-                <input type="hidden" name="noteMediaId" value="<%= media.id %>">
-                <input type="hidden" name="noteAlterType" value="add">
-            </div>
-        </form>
-        <ul id="notes-list">
-            <% notes.forEach(note => { %>
-                <li><%= note.note %></li>
-                <button id="edit-note">Edit</button>
-                <button id="delete-note">Delete</button>
-                <form action="/notes" method="post">
-                    <label for="edit-note">Enter new content:</label>
-                    <input type="text" name="edit-note" id="edit-note-input">
-                    <input type="submit" value="Edit">
-                    <input type="hidden" name="noteId" value="<%= note.id %>">
-                    <input type="hidden" name="noteAlterType" value="edit">
-                </form>
-                <form action="/notes" method="post">
-                    <input type="submit" value="Delete">
-                    <input type="hidden" name="noteId" value="<%= note.id %>">
-                    <input type="hidden" name="noteAlterType" value="delete">
-                </form>
-            <% }) %>
-        </ul>
+        <section>
+            <button class="large-button add-new-note">Add New Note</button>
+            <form action="/notes" class="notes-edit" method="post">
+                <div class="new-note-div">
+                    <label for="new-note">Enter note content:</label>
+                    <input type="text" name="new-note" id="new-note-input">
+                    <input class="large-button" type="submit" value="Add">
+                    <input type="hidden" name="noteMediaId" value="<%= media.id %>">
+                    <input type="hidden" name="noteAlterType" value="add">
+                </div>
+            </form>
+            <ul id="notes-list">
+                <% notes.forEach(note => { %>
+                    <li><%= note.note %></li>
+                    <button class="large-button" id="edit-note">Edit</button>
+                    <form action="/notes" method="post" id="edit-note-form">
+                        <label for="edit-note">Enter new content:</label>
+                        <input type="text" name="edit-note" id="edit-note-input">
+                        <input class="large-button" type="submit" value="Edit">
+                        <input type="hidden" name="noteId" value="<%= note.id %>">
+                        <input type="hidden" name="noteAlterType" value="edit">
+                    </form>
+                    <form action="/notes" method="post">
+                        <input class="large-button" type="submit" value="Delete">
+                        <input type="hidden" name="noteId" value="<%= note.id %>">
+                        <input type="hidden" name="noteAlterType" value="delete">
+                    </form>
+                <% }) %>
+            </ul>
+        </section>
+        <script>
+            const showNew = document.querySelector('.add-new-note');
+            const showEdit = document.querySelector('#edit-note');
+            const newForm = document.querySelector('.notes-edit');
+            const editForm = document.querySelector('#edit-note-form');
+
+            showNew.addEventListener('click', () => {
+                showNew.style.opacity = '0%';
+                newForm.style.opacity = '100%';
+            });
+
+            showEdit.addEventListener('click', () => {
+                showEdit.style.opacity = '0%';
+                editForm.style.opacity = '100%';
+            })
+        </script>
     <% } %>

@@ -28,7 +28,7 @@ let editing = {
 const databaseMethods = {
   //for entries
   view: "SELECT * FROM media WHERE id = $1",
-  edit: "UPDATE media SET title = $1, artist = $2 WHERE id = $3",
+  edit: "UPDATE media SET title = $1, artist = $2, genre = $3 WHERE id = $4",
   delete: "DELETE FROM media WHERE id = $1",
   add: "INSERT INTO media (title, artist, genre, cover_url) VALUES ($1, $2, $3, $4)",
   //for notes
@@ -57,7 +57,7 @@ app.get("/", async (req, res) => {
 
 app.post("/new", async (req, res) => {
   if (editing.edit) {
-    let edit = [req.body.title, req.body.artist, req.body.editEntry];
+    let edit = [req.body.title, req.body.artist, req.body.genre, req.body.editEntry];
     try {
       await db.query(databaseMethods.edit, edit);
       editing = {
