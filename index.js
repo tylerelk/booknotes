@@ -127,8 +127,10 @@ app.post("/notes", async (req, res) => {
     case "delete":
       await db.query(databaseMethods.deleteNote, [req.body.noteId]);
       break;
-  }
-  res.redirect("/");
+  };
+  let selected = await db.query(databaseMethods.view, [req.body.noteMediaId]);
+  let notes = await db.query(databaseMethods.notes, [req.body.noteMediaId]);
+  res.render("media.ejs", { media: selected.rows[0], notes: notes.rows });
 });
 
 app.post("/delete", async (req, res) => {

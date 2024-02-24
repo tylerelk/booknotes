@@ -196,23 +196,38 @@ button {
 
 #footer {
   width: auto;
-  margin: auto;
-  padding: 0 1rem;
+  margin: 1rem;
+  padding: 1rem;
 }
 
 .highlight {
   color: var(--red);
 }
 
+.inline {
+  display: flex;
+  justify-content: baseline;
+  align-items: center;
+}
+
 /* view-mode settings */
 .notes-edit {
   opacity: 0%;
   transition: 1s;
+  transform: translateX(150px);
 }
 
 #edit-note-form {
   opacity: 0%;
   transition: 1s;
+  transform: translateX(150px);
+}
+
+.note {
+  box-shadow: 1px 3px 10px 2px lightgrey;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 20px;
 }
 
 /* Temp styles */

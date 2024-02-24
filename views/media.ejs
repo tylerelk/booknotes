@@ -2,36 +2,46 @@
 
 <section id="title-area view-mode">
     <h1><%= media.title %></h1>
-    <h2>by <%= media.artist %></h2>
+    <h2>by <span class="highlight"><%= media.artist %></span></h2>
+    <form action="/"><button class="close-button" formaction="/" formmethod="/get"><span class="material-symbols-outlined"> close </span></button></form>
 </section>
     <% if(notes) {%>
         <section>
-            <button class="large-button add-new-note">Add New Note</button>
-            <form action="/notes" class="notes-edit" method="post">
-                <div class="new-note-div">
-                    <label for="new-note">Enter note content:</label>
-                    <input type="text" name="new-note" id="new-note-input">
-                    <input class="large-button" type="submit" value="Add">
-                    <input type="hidden" name="noteMediaId" value="<%= media.id %>">
-                    <input type="hidden" name="noteAlterType" value="add">
-                </div>
-            </form>
+            <div class="inline">
+                <button class="large-button add-new-note">Add New Note</button>
+                <form action="/notes" class="notes-edit" method="post">
+                    <div class="new-note-div">
+                        <label for="new-note">Enter note:</label>
+                        <input type="text" name="new-note" id="new-note-input">
+                        <input class="large-button" type="submit" value="Add">
+                        <input type="hidden" name="noteMediaId" value="<%= media.id %>">
+                        <input type="hidden" name="noteAlterType" value="add">
+                    </div>
+                </form>
+            </div>
             <ul id="notes-list">
+                <h2>Notes:</h2>
                 <% notes.forEach(note => { %>
-                    <li><%= note.note %></li>
-                    <button class="large-button" id="edit-note">Edit</button>
-                    <form action="/notes" method="post" id="edit-note-form">
-                        <label for="edit-note">Enter new content:</label>
-                        <input type="text" name="edit-note" id="edit-note-input">
-                        <input class="large-button" type="submit" value="Edit">
-                        <input type="hidden" name="noteId" value="<%= note.id %>">
-                        <input type="hidden" name="noteAlterType" value="edit">
-                    </form>
-                    <form action="/notes" method="post">
-                        <input class="large-button" type="submit" value="Delete">
-                        <input type="hidden" name="noteId" value="<%= note.id %>">
-                        <input type="hidden" name="noteAlterType" value="delete">
-                    </form>
+                    <div class="inline">
+                        <li class="note">
+                        <h4><%= note.note %></h4>
+                        <button class="large-button" id="edit-note">Edit</button>
+                        <form action="/notes" method="post" id="edit-note-form">
+                            <label for="edit-note">Enter new content:</label>
+                            <input type="text" name="edit-note" id="edit-note-input">
+                            <input class="large-button" type="submit" value="Edit">
+                            <input type="hidden" name="noteId" value="<%= note.id %>">
+                            <input type="hidden" name="noteMediaId" value="<%= media.id %>">
+                            <input type="hidden" name="noteAlterType" value="edit">
+                        </form>
+                        <form action="/notes" method="post">
+                            <input class="large-button" type="submit" value="Delete">
+                            <input type="hidden" name="noteId" value="<%= note.id %>">
+                            <input type="hidden" name="noteMediaId" value="<%= media.id %>">
+                            <input type="hidden" name="noteAlterType" value="delete">
+                        </form>
+                        </li>
+                    </div>
                 <% }) %>
             </ul>
         </section>
@@ -42,13 +52,16 @@
             const editForm = document.querySelector('#edit-note-form');
 
             showNew.addEventListener('click', () => {
-                showNew.style.opacity = '0%';
+                showNew.style.opacity = '10%';
+                showNew.style.transform = 'translateX(-150px)'
                 newForm.style.opacity = '100%';
+                newForm.style.transform = 'translateX(0)'
             });
 
             showEdit.addEventListener('click', () => {
-                showEdit.style.opacity = '0%';
+                showEdit.style.opacity = '10%';
                 editForm.style.opacity = '100%';
+                editForm.style.transform = 'translateX(0)'
             })
         </script>
     <% } %>
